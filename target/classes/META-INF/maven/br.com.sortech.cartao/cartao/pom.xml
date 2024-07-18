@@ -61,7 +61,7 @@
 			<artifactId>conn</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>C:/Projetos/sortech/bibliotecas/conn.jar</systemPath>
+			<systemPath>${env.HOMEDRIVE}/Projetos/sortech/bibliotecas/conn.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
@@ -90,14 +90,22 @@
 			<artifactId>integracao</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>C:/Projetos/sortech/bibliotecas/integracao.jar</systemPath>
+			<systemPath>${env.HOMEDRIVE}/Projetos/sortech/bibliotecas/integracao.jar</systemPath>
 		</dependency>	
 		<dependency>
 			<groupId>com.softwareag</groupId>
 			<artifactId>entirex</artifactId>
+			<scope>system</scope>
+			<systemPath>${env.HOMEDRIVE}/Projetos/sortech/bibliotecas/entirex.jar</systemPath>
 			<version>1.0.1</version>
 		</dependency>
-		
-	</dependencies>
+				
+	
+   <dependency>
+     <groupId>com.h2database</groupId>
+     <artifactId>h2</artifactId>
+     <version>1.4.199</version>
+   </dependency>
+ </dependencies>
 
 </project>

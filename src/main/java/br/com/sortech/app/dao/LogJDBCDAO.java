@@ -1,6 +1,9 @@
 package br.com.sortech.app.dao;
 
 import java.sql.SQLException;
+
+import org.h2.jdbc.JdbcConnection;
+
 import java.sql.Clob;
 import java.sql.PreparedStatement;
 

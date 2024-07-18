@@ -7,6 +7,7 @@ import static spark.Spark.port;
 import static spark.Spark.post;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.sortech.app.dao.AcaoWppJDBCDAO;
 import br.com.sortech.app.filter.CorsFilter;
 import br.com.sortech.app.model.EmpresaCartao;
 import br.com.sortech.app.model.ConsultarOutrosDebitos;
@@ -470,7 +472,26 @@ public class App {
 					res.status(400);
 					return om.writeValueAsString(ret); 
 				}
-			});					
+				
+			});
+			
+			get("verificarAcoesPendentes", (req, res) -> {
+                AcaoWppJDBCDAO dao = new AcaoWppJDBCDAO();
+                try {
+                    dao.verificarAcoesPendentes();
+                    res.status(200);
+                    return "Ações pendentes verificadas e mensagens enviadas.";
+                } catch (SQLException e) {
+                    res.status(500);
+                    return "Erro ao verificar ações pendentes: " + e.getMessage();
+                } finally {
+                    try {
+                        dao.closeConnDispositivo();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
 			get("stop", (request, response) -> {
 				Spark.stop();
