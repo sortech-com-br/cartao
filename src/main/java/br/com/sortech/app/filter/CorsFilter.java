@@ -122,8 +122,9 @@ public final class CorsFilter {
 					EmpresaCartao empresacartao = null;
 
 					acao = request.pathInfo().split("/");
-
-					if (!acao[acao.length-1].equals("erro")&&!acao[acao.length-1].equals("teste")&&!acao[acao.length-1].equals("errojson")){
+					App.logger.error("Chegou aqui " + acao);
+					
+					if (!acao[acao.length-1].equals("erro")&&!acao[acao.length-1].equals("teste")&&!acao[acao.length-1].equals("errojson")&& !acao[acao.length-1].equals("verificarAcoesPendentes")&& !acao[acao.length-1].equals("atualizarActionStatus")){
 
 						if (request.headers("Authorization")==null) {
 							response.redirect("/erro");
@@ -150,7 +151,7 @@ public final class CorsFilter {
 						
 //						JWTDecoder decode = new JWTDecoder(request.headers("Authorization"));
 
-
+				
 						empresacartao = omfilter.readValue(request.body(), EmpresaCartao.class);
 						
 						
@@ -167,6 +168,7 @@ public final class CorsFilter {
 						//	App.logger.info("gravar log ");
 						gravarLog(empresacartao, request.body().toString(),"",request.pathInfo(),request.headers("Authorization"));
 						gravarDevedor(empresacartao);
+						
 						validar = null;
 					}
 				}	)

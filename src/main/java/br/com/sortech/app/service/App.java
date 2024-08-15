@@ -14,10 +14,13 @@ import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 import org.apache.log4j.Logger;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.sortech.app.dao.AcaoWppJDBCDAO;
+import br.com.sortech.app.dao.AcaoWppDAO;
+import br.com.sortech.app.model.AcaoWpp;
 import br.com.sortech.app.filter.CorsFilter;
 import br.com.sortech.app.model.EmpresaCartao;
 import br.com.sortech.app.model.ConsultarOutrosDebitos;
@@ -475,23 +478,52 @@ public class App {
 				
 			});
 			
-			get("verificarAcoesPendentes", (req, res) -> {
-                AcaoWppJDBCDAO dao = new AcaoWppJDBCDAO();
-                try {
-                    dao.verificarAcoesPendentes();
-                    res.status(200);
-                    return "Ações pendentes verificadas e mensagens enviadas.";
-                } catch (SQLException e) {
-                    res.status(500);
-                    return "Erro ao verificar ações pendentes: " + e.getMessage();
-                } finally {
-                    try {
-                        dao.closeConnDispositivo();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+			 get("verificarAcoesPendentes", (req, res) -> {
+	                
+	                AcaoWppDAO dao = new AcaoWppJDBCDAO();
+	                res.type("application/json");
+
+	                try {
+	                    List<AcaoWpp> acoesPendentes = dao.verificarAcoesPendentes();
+	                    res.status(200);
+	                    return om.writeValueAsString(acoesPendentes);
+	                } catch (SQLException e) {
+	                    res.status(500);
+	                    return "{\"status\":\"ERROR\",\"message\":\"Erro ao verificar ações pendentes: " + e.getMessage() + "\"}";
+	                } finally {
+	                    try {
+	                        dao.closeConnDispositivo();
+	                    } catch (Throwable e) {
+	                        e.printStackTrace();
+	                    }
+	                }
+	            });
+			 
+			 post("/atualizarActionStatus", (req, res) -> {
+				    AcaoWppDAO dao = new AcaoWppJDBCDAO();
+				    res.type("application/json");
+
+				    try {
+				        List<AcaoWpp> updates = om.readValue(req.body(), om.getTypeFactory().constructCollectionType(List.class, AcaoWpp.class));
+				        dao.atualizarActionStatus(updates);
+				        dao.atualizarStatusId(updates);
+				        res.status(200);
+				        return "{\"status\":\"SUCCESS\",\"message\":\"Ações atualizadas com sucesso\"}";
+				    } catch (IOException e) {
+				        res.status(400);
+				        return "{\"status\":\"ERROR\",\"message\":\"Erro ao ler o corpo da requisição: " + e.getMessage() + "\"}";
+				    } catch (SQLException e) {
+				        res.status(500);
+				        return "{\"status\":\"ERROR\",\"message\":\"Erro ao atualizar ACTION_STATUS: " + e.getMessage() + "\"}";
+				    } finally {
+				        try {
+				            dao.closeConnDispositivo();
+				        } catch (Throwable e) {
+				            e.printStackTrace();
+				        }
+				    }
+				});
+
 
 			get("stop", (request, response) -> {
 				Spark.stop();
