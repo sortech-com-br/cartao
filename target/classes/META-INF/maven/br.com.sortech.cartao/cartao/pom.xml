@@ -9,6 +9,9 @@
 <url>http://maven.apache.org</url>
 
 	<properties>
+		<conn-systemPath>D:\Dev\Sortech\cartao\libs/conn.jar</conn-systemPath>
+		<integracao-systemPath>D:\Dev\Sortech\cartao\libs/integracao.jar</integracao-systemPath>
+		<entirex-systemPath>D:\Dev\Sortech\cartao\libs/entirex.jar</entirex-systemPath>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -61,7 +64,7 @@
 			<artifactId>conn</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${env.HOMEDRIVE}/Projetos/sortech/bibliotecas/conn.jar</systemPath>
+			<systemPath>${conn-systemPath}</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
@@ -90,13 +93,13 @@
 			<artifactId>integracao</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${env.HOMEDRIVE}/Projetos/sortech/bibliotecas/integracao.jar</systemPath>
+			<systemPath>${integracao-systemPath}</systemPath>
 		</dependency>	
 		<dependency>
 			<groupId>com.softwareag</groupId>
 			<artifactId>entirex</artifactId>
 			<scope>system</scope>
-			<systemPath>${env.HOMEDRIVE}/Projetos/sortech/bibliotecas/entirex.jar</systemPath>
+			<systemPath>${entirex-systemPath}</systemPath>
 			<version>1.0.1</version>
 		</dependency>
 		

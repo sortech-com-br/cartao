@@ -16,7 +16,7 @@ public class AcaoWppJDBCDAO implements AcaoWppDAO {
     public AcaoWppJDBCDAO() {}
 
     @Override
-    public void closeConnDispositivo() throws Throwable {
+    public void closeConnAcao() throws Throwable {
         if (conn != null) {
             conn.closeConn();
         }
